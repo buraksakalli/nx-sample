@@ -1,0 +1,101 @@
+{
+  "version": 2,
+  "projects": {
+    "nx-sample": {
+      "root": "apps/nx-sample",
+      "sourceRoot": "apps/nx-sample",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/next:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "root": "apps/nx-sample",
+            "outputPath": "dist/apps/nx-sample"
+          },
+          "configurations": {
+            "production": {}
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/next:server",
+          "options": {
+            "buildTarget": "nx-sample:build",
+            "dev": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "nx-sample:build:production",
+              "dev": false
+            }
+          }
+        },
+        "export": {
+          "executor": "@nrwl/next:export",
+          "options": {
+            "buildTarget": "nx-sample:build:production"
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/nx-sample"],
+          "options": {
+            "jestConfig": "apps/nx-sample/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/nx-sample/**/*.{ts,tsx,js,jsx}"]
+          }
+        }
+      }
+    },
+    "nx-sample-e2e": {
+      "root": "apps/nx-sample-e2e",
+      "sourceRoot": "apps/nx-sample-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/nx-sample-e2e/cypress.json",
+            "devServerTarget": "nx-sample:serve",
+            "tsConfig": "apps/nx-sample-e2e/tsconfig.json"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "nx-sample:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/nx-sample-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/next"
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "babel": true
+      }
+    },
+    "@nrwl/next": {
+      "application": {
+        "style": "styled-components",
+        "linter": "eslint"
+      }
+    }
+  },
+  "defaultProject": "nx-sample"
+}
